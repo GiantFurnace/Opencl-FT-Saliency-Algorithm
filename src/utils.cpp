@@ -212,3 +212,20 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
     return true;
 
 }
+
+void free_global_clbuffer(CLBuffer & buffer)
+{
+    clReleaseKernel(buffer.cl_saliency_kernel);    
+    clReleaseKernel(buffer.cl_reduction_kernel);   
+    clReleaseProgram(buffer.cl_saliency_program); 
+    clReleaseProgram(buffer.cl_reduction_program); 
+    clReleaseMemObject(buffer.cl_bimg);
+    clReleaseMemObject(buffer.cl_gimg);
+    clReleaseMemObject(buffer.cl_rimg);
+    clReleaseMemObject(buffer.cl_Limg);
+    clReleaseMemObject(buffer.cl_Aimg);
+    clReleaseMemObject(buffer.cl_Bimg);
+    clReleaseMemObject(buffer.loutput_buffer);
+    clReleaseMemObject(buffer.aoutput_buffer);
+    clReleaseMemObject(buffer.boutput_buffer);
+}
