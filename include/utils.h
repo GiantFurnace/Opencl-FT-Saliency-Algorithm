@@ -43,4 +43,5 @@
 int read_kernel_from_file(const char* kernel_file_path, char **kernel_buffer);
 bool init_gpu_cl(cl_device_id & device, cl_context & context, cl_command_queue & queue);
 bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context & context);
+void free_global_clbuffer(CLBuffer & buffer);
 #endif
