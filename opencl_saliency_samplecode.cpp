@@ -92,6 +92,8 @@ int main(int argc, char ** argv)
 
     cv::Mat saliency_image = opencl_calc_saliency_with_ft_algorithm(sample_image, context, queue);
     imwrite("result.jpg", saliency_image);
+    free_global_clbuffer(CL_BUFFER);
+
     return EXIT_SUCCESS;
 }
 
