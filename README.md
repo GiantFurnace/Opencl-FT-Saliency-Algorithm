@@ -18,7 +18,7 @@ Introduction about saliency .[saliency https://en.wikipedia.org/wiki/Salience_(n
 - ./opencl-saliency sample.jpg
 
 ## 3. Applications
-### 3.1 Output of the Algorithm like the following:
+### 3.1 Output of the Algorithm:
 <p align="left">
   <img width="1280" height="160" src="sample.jpg">
   <img width="1280" height="160" src="result.jpg">
