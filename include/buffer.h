@@ -66,13 +66,13 @@ struct CLBuffer
     cl_mem boutput_buffer;
 
     cl_sampler cl_sampler_;
-    cl_program cl_saliency_program;
-    cl_kernel cl_saliency_kernel;
+    cl_program cl_bgr2lab_program;
+    cl_kernel cl_bgr2lab_kernel;
     cl_program cl_reduction_program;
     cl_kernel cl_reduction_kernel;
-    size_t cl_saliency_origin[3];
-    size_t cl_saliency_region[3];
-    size_t cl_saliency_global_work_size[2];
+    size_t cl_bgr2lab_origin[3];
+    size_t cl_bgr2lab_region[3];
+    size_t cl_bgr2lab_global_work_size[2];
     size_t cl_reduction_global_work_size[1];
     size_t cl_reduction_local_work_size[1];
     size_t cl_groups;
