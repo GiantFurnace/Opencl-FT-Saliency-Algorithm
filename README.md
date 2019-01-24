@@ -18,20 +18,8 @@ Converts BGR color space to LAB, detailed information about LAB color space can 
 ### Reduction
 Calculates the sum of every single channel with reduction algorithm in LAB color space.
 
-## 3. Usage
-### How to use this project
 
-- Directly make the Makefile
-- ./opencl-saliency sample.jpg
-
-## 4. Applications
-### 4.1 Output of the Algorithm:
-<p align="left">
-  <img width="1280" height="160" src="sample.jpg">
-  <img width="1280" height="160" src="result.jpg">
-</p>
-
-## 5. Contact
+## 4. Contact
 
 |Author          | Email            | Wechat      |
 | ---------------|:----------------:| -----------:|
