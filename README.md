@@ -16,7 +16,7 @@ You can find kernels of bgr2lab and reduction under the directory of kernels
 Converts BGR color space to LAB, detailed information about LAB color space can be found in [LAB https://en.wikipedia.org/wiki/CIELAB_color_space](https://en.wikipedia.org/wiki/CIELAB_color_space)<br />
 
 ### Reduction
-Calculates the sum of every single channel in LAB color space.
+Calculates the sum of every single channel with reduction algorithm in LAB color space.
 
 ## 3. Usage
 ### How to use this project
