@@ -1,4 +1,4 @@
-__kernel void saliency(__read_only image2d_t Bimg_, __read_only image2d_t Gimg_, __read_only image2d_t Rimg_, 
+__kernel void bgr2lab(__read_only image2d_t Bimg_, __read_only image2d_t Gimg_, __read_only image2d_t Rimg_, 
                        __write_only image2d_t Limg, __write_only image2d_t Aimg, __write_only image2d_t Bimg,
                        sampler_t sampler)
 {
