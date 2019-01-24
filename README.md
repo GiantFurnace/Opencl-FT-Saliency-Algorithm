@@ -10,21 +10,28 @@ Open Source Computer Vision Library.[opencv https://opencv.org/](https://opencv.
 Introduction about Opencl .[opencl https://en.wikipedia.org/wiki/OpenCL](https://en.wikipedia.org/wiki/OpenCL)<br />
 Introduction about saliency .[saliency https://en.wikipedia.org/wiki/Salience_(neuroscience)](https://en.wikipedia.org/wiki/Salience_(neuroscience))<br />  
 
-## 2. Usage
+## 2. Opencl kernels
+You can find kernels of bgr2lab and reduction under the directory of kernels
+### BGR2LAB
+Converts BGR color space to LAB, detailed information about LAB color space can be found in [LAB https://en.wikipedia.org/wiki/CIELAB_color_space](https://en.wikipedia.org/wiki/CIELAB_color_space)<br />
+
+### Reduction
+Calculates the sum of every single channel in LAB color space.
+
+## 3. Usage
 ### How to use this project
 
 - Directly make the Makefile
-
 - ./opencl-saliency sample.jpg
 
-## 3. Applications
-### 3.1 Output of the Algorithm:
+## 4. Applications
+### 4.1 Output of the Algorithm:
 <p align="left">
   <img width="1280" height="160" src="sample.jpg">
   <img width="1280" height="160" src="result.jpg">
 </p>
 
-## 4. Contact
+## 5. Contact
 
 |Author          | Email            | Wechat      |
 | ---------------|:----------------:| -----------:|
@@ -32,5 +39,5 @@ Introduction about saliency .[saliency https://en.wikipedia.org/wiki/Salience_(n
 
 **Notice:  Any comments and suggestions are welcomed**
 
-## 5. License
+## 6. License
 [Apache License 2.0](./LICENSE)
