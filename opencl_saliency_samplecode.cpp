@@ -109,21 +109,21 @@ cv::Mat  opencl_calc_saliency_with_ft_algorithm(cv::Mat & sample_image, cl_conte
         CL_BUFFER.rimg_buffer[index] = channels[2].data[index];
     }
 
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 0, sizeof(cl_mem), &(CL_BUFFER.cl_bimg));
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 1, sizeof(cl_mem), &(CL_BUFFER.cl_gimg));
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 2, sizeof(cl_mem), &(CL_BUFFER.cl_rimg));
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 3, sizeof(cl_mem), &(CL_BUFFER.cl_Limg));
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 4, sizeof(cl_mem), &(CL_BUFFER.cl_Aimg));
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 5, sizeof(cl_mem), &(CL_BUFFER.cl_Bimg));
-    clSetKernelArg(CL_BUFFER.cl_saliency_kernel, 6, sizeof(cl_sampler), &(CL_BUFFER.cl_sampler_));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 0, sizeof(cl_mem), &(CL_BUFFER.cl_bimg));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 1, sizeof(cl_mem), &(CL_BUFFER.cl_gimg));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 2, sizeof(cl_mem), &(CL_BUFFER.cl_rimg));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 3, sizeof(cl_mem), &(CL_BUFFER.cl_Limg));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 4, sizeof(cl_mem), &(CL_BUFFER.cl_Aimg));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 5, sizeof(cl_mem), &(CL_BUFFER.cl_Bimg));
+    clSetKernelArg(CL_BUFFER.cl_bgr2lab_kernel, 6, sizeof(cl_sampler), &(CL_BUFFER.cl_sampler_));
     
-    clEnqueueWriteImage(queue, CL_BUFFER.cl_bimg, CL_TRUE, CL_BUFFER.cl_saliency_origin, CL_BUFFER.cl_saliency_region, 0, 0, CL_BUFFER.bimg_buffer, 0, 0, 0);
-    clEnqueueWriteImage(queue, CL_BUFFER.cl_gimg, CL_TRUE, CL_BUFFER.cl_saliency_origin, CL_BUFFER.cl_saliency_region, 0, 0, CL_BUFFER.gimg_buffer, 0, 0, 0);
-    clEnqueueWriteImage(queue, CL_BUFFER.cl_rimg, CL_TRUE, CL_BUFFER.cl_saliency_origin, CL_BUFFER.cl_saliency_region, 0, 0, CL_BUFFER.rimg_buffer, 0, 0, 0);
-    clEnqueueNDRangeKernel(queue, CL_BUFFER.cl_saliency_kernel, 2, 0, CL_BUFFER.cl_saliency_global_work_size, 0, 0, 0, 0);
-    clEnqueueReadImage(queue, CL_BUFFER.cl_Limg, CL_TRUE, CL_BUFFER.cl_saliency_origin, CL_BUFFER.cl_saliency_region, 0, 0, CL_BUFFER.bimg_buffer, 0, NULL, NULL);
-    clEnqueueReadImage(queue, CL_BUFFER.cl_Aimg, CL_TRUE, CL_BUFFER.cl_saliency_origin, CL_BUFFER.cl_saliency_region, 0, 0, CL_BUFFER.gimg_buffer, 0, NULL, NULL);
-    clEnqueueReadImage(queue, CL_BUFFER.cl_Bimg, CL_TRUE, CL_BUFFER.cl_saliency_origin, CL_BUFFER.cl_saliency_region, 0, 0, CL_BUFFER.rimg_buffer, 0, NULL, NULL);
+    clEnqueueWriteImage(queue, CL_BUFFER.cl_bimg, CL_TRUE, CL_BUFFER.cl_bgr2lab_origin,  CL_BUFFER.cl_bgr2lab_region, 0, 0, CL_BUFFER.bimg_buffer, 0, 0, 0);
+    clEnqueueWriteImage(queue, CL_BUFFER.cl_gimg, CL_TRUE, CL_BUFFER.cl_bgr2lab_origin, CL_BUFFER.cl_bgr2lab_region, 0, 0, CL_BUFFER.gimg_buffer, 0, 0, 0);
+    clEnqueueWriteImage(queue, CL_BUFFER.cl_rimg, CL_TRUE, CL_BUFFER.cl_bgr2lab_origin, CL_BUFFER.cl_bgr2lab_region, 0, 0, CL_BUFFER.rimg_buffer, 0, 0, 0);
+    clEnqueueNDRangeKernel(queue, CL_BUFFER.cl_bgr2lab_kernel, 2, 0, CL_BUFFER.cl_bgr2lab_global_work_size, 0, 0, 0, 0);
+    clEnqueueReadImage(queue, CL_BUFFER.cl_Limg, CL_TRUE, CL_BUFFER.cl_bgr2lab_origin,  CL_BUFFER.cl_bgr2lab_region, 0, 0, CL_BUFFER.bimg_buffer, 0, NULL, NULL);
+    clEnqueueReadImage(queue, CL_BUFFER.cl_Aimg, CL_TRUE, CL_BUFFER.cl_bgr2lab_origin, CL_BUFFER.cl_bgr2lab_region, 0, 0, CL_BUFFER.gimg_buffer, 0, NULL, NULL);
+    clEnqueueReadImage(queue, CL_BUFFER.cl_Bimg, CL_TRUE, CL_BUFFER.cl_bgr2lab_origin, CL_BUFFER.cl_bgr2lab_region, 0, 0, CL_BUFFER.rimg_buffer, 0, NULL, NULL);
 
     cl_mem linput_buffer = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, config::IMAGE_PIXELS, CL_BUFFER.bimg_buffer, NULL);
     cl_mem ainput_buffer = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, config::IMAGE_PIXELS, CL_BUFFER.gimg_buffer, NULL);
