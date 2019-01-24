@@ -43,7 +43,7 @@
 #include <cstdlib>
 #include <iostream>
 
-static const char *SALIENCY_KERNEL_FILE_PATH = "./kernels/saliency.cl";
+static const char *SALIENCY_KERNEL_FILE_PATH = "./kernels/bgr2lab.cl";
 static const char *REDUCTION_KERNEL_FILE_PATH = "./kernels/reduction.cl";
 
 int read_kernel_from_file(const char* kernel_file_path, char **kernel_buffer)
@@ -143,26 +143,26 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
     }
     
     
-    char* saliency_kernel_source = 0;
-    int saliency_kernel_size = read_kernel_from_file(SALIENCY_KERNEL_FILE_PATH, &saliency_kernel_source);
-    if (saliency_kernel_size <=0)
+    char* bgr2lab_kernel_source = 0;
+    int bgr2lab_kernel_size = read_kernel_from_file(BGR2LAB_KERNEL_FILE_PATH, &bgr2lab_kernel_source);
+    if (bgr2lab_kernel_size <=0)
     {
         return false;
     }
 
-    buffer.cl_saliency_program = clCreateProgramWithSource(context, 1, (const char **)&saliency_kernel_source, (const size_t *)&saliency_kernel_size, &error);
+    buffer.cl_bgr2lab_program = clCreateProgramWithSource(context, 1, (const char **)&bgr2lab_kernel_source, (const size_t *)&bgr2lab_kernel_size, &error);
     if (error != CL_SUCCESS)
     {
         std::cerr<<"clCreateProgramWithSource() failed. error code:"<<error<<std::endl;
-        free(saliency_kernel_source);
+        free(bgr2lab_kernel_source);
         return false;
     }
-    clBuildProgram(buffer.cl_saliency_program, 1, &device, 0, 0, 0);
-    buffer.cl_saliency_kernel = clCreateKernel(buffer.cl_saliency_program, "saliency", &error);
+    clBuildProgram(buffer.cl_bgr2lab_program, 1, &device, 0, 0, 0);
+    buffer.cl_bgr2lab_kernel = clCreateKernel(buffer.bgr2lab_program, "bgr2lab", &error);
     if (error != CL_SUCCESS)
     {
         std::cerr<<"clCreateKernel() failed. error code:"<<error<<std::endl;
-        free(saliency_kernel_source);
+        free(bgr2lab_kernel_source);
         return false;
     }
 
@@ -170,7 +170,7 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
     int reduction_kernel_size = read_kernel_from_file(REDUCTION_KERNEL_FILE_PATH, &reduction_kernel_source);
     if(reduction_kernel_size <=0)
     {
-        free(saliency_kernel_source);
+        free(bgr2lab_kernel_source);
         return false; 
     }
 
@@ -178,7 +178,7 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
     if (error != CL_SUCCESS)
     {
         std::cerr<<"clCreateProgramWithSource() failed. error code:"<<error<<std::endl;
-        free(saliency_kernel_source);
+        free(bgr2lab_kernel_source);
         free(reduction_kernel_source);
         return false;
     }
@@ -187,19 +187,19 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
     if (error != CL_SUCCESS)
     {
         std::cerr<<"clCreateKernel() failed. error code:"<<error<<std::endl;
-        free(saliency_kernel_source);
+        free(bgr2lab_kernel_source);
         free(reduction_kernel_source);
         return false;
     }
     
-    buffer.cl_saliency_origin[0] = 0;
-    buffer.cl_saliency_origin[1] = 0;
-    buffer.cl_saliency_origin[2] = 0;
-    buffer.cl_saliency_region[0] = config::IMAGE_COLS;
-    buffer.cl_saliency_region[1] = config::IMAGE_ROWS;
-    buffer.cl_saliency_region[2] = 1; 
-    buffer.cl_saliency_global_work_size[0] = config::IMAGE_COLS;
-    buffer.cl_saliency_global_work_size[1] = config::IMAGE_ROWS;
+    buffer.cl_bgr2lab_origin[0] = 0;
+    buffer.cl_bgr2lab_origin[1] = 0;
+    buffer.cl_bgr2lab_origin[2] = 0;
+    buffer.cl_bgr2lab_region[0] = config::IMAGE_COLS;
+    buffer.cl_bgr2lab_region[1] = config::IMAGE_ROWS;
+    buffer.cl_bgr2lab_region[2] = 1; 
+    buffer.cl_bgr2lab_global_work_size[0] = config::IMAGE_COLS;
+    buffer.cl_bgr2lab_global_work_size[1] = config::IMAGE_ROWS;
     
     buffer.cl_reduction_global_work_size[0] = 512; 
     buffer.cl_reduction_local_work_size[0] = 64; 
@@ -207,7 +207,7 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
     buffer.loutput_buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, buffer.cl_groups * 4 * sizeof(unsigned int), NULL, NULL);
     buffer.aoutput_buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, buffer.cl_groups * 4 * sizeof(unsigned int), NULL, NULL);
     buffer.boutput_buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, buffer.cl_groups * 4 * sizeof(unsigned int), NULL, NULL);
-    free(saliency_kernel_source);
+    free(bgr2lab_kernel_source);
     free(reduction_kernel_source);
     return true;
 
@@ -215,9 +215,9 @@ bool init_global_clbuffer(CLBuffer & buffer, cl_device_id & device, cl_context &
 
 void free_global_clbuffer(CLBuffer & buffer)
 {
-    clReleaseKernel(buffer.cl_saliency_kernel);    
+    clReleaseKernel(buffer.cl_bgr2lab_kernel);    
     clReleaseKernel(buffer.cl_reduction_kernel);   
-    clReleaseProgram(buffer.cl_saliency_program); 
+    clReleaseProgram(buffer.cl_bgr2lab_program); 
     clReleaseProgram(buffer.cl_reduction_program); 
     clReleaseMemObject(buffer.cl_bimg);
     clReleaseMemObject(buffer.cl_gimg);
