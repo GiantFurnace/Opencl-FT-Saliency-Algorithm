@@ -19,7 +19,7 @@ Converts BGR color space to LAB, detailed information about LAB color space can 
 Calculates the sum of every single channel with reduction algorithm in LAB color space.
 
 ## 3. Reduction's configuration
-The total pixels of sample image is 102400 * 4(640*640).we set global work size:640, local work size: 64, then we can calculate the local groups, which is:640/64
+The total pixels of sample image is 102400 * 4(640*640).we set global work size:640, local work size: 64, then we can calculate the local groups, which is:640/64.The config file is located at **./include/config.h**.
 
 ## 4. Applications
 
